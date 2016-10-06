@@ -11,6 +11,7 @@ public class PlayerController : MonoBehaviour {
     void Start ()
 	{
 		rb = GetComponent<Rigidbody>();
+        transform.position = Camera.main.transform.position;
         offset = Camera.main.transform.position - transform.position;
     }
 
