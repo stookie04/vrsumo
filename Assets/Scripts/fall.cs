@@ -4,6 +4,7 @@ using System.Collections;
 public class fall : MonoBehaviour {
 
     float fallTime;
+    bool rampsActive = true;
 
 	// Use this for initialization
 	void Start () {
@@ -27,4 +28,17 @@ public class fall : MonoBehaviour {
             Destroy(gameObject);
         }
 	}
+
+    void OnCollisionEnter(Collision col)
+    {
+        if (col.gameObject.tag == "Player" && rampsActive)
+        {
+            rampsActive = false;
+            GameObject[] ramps = GameObject.FindGameObjectsWithTag("ramp");
+            foreach (GameObject go in ramps)
+            {
+                go.SetActive(false);
+            }
+        }
+    }
 }

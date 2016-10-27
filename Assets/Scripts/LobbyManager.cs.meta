@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: c1d54a6663492f049a1c8028fe19fba5
+timeCreated: 1477515321
+licenseType: Free
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - m_PlayerPrefab: {instanceID: 0}
+  - matchMaker: {instanceID: 0}
+  - m_LobbyPlayerPrefab: {fileID: 114000010149670012, guid: b2240d7a43136ed47b2bb4229951395e,
+      type: 2}
+  - m_GamePlayerPrefab: {fileID: 1000012940266708, guid: 28148dbf82ae875469c58c39bd9a4b45,
+      type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

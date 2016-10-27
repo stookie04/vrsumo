@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Outer
   - Mid
+  - ramp
   layers:
   - Default
   - TransparentFX
