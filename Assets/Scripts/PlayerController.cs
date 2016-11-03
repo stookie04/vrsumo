@@ -6,13 +6,21 @@ public class PlayerController : MonoBehaviour {
 	public float speed;
 
 	private Rigidbody rb;
-    private Vector3 offset;
+
+    public Vector3 offset = new Vector3(0f, 0.5f, -1f);
 
     void Start ()
 	{
 		rb = GetComponent<Rigidbody>();
         //transform.position = Camera.main.transform.position;
-        offset = Camera.main.transform.position - transform.position;
+        //offset = Camera.main.transform.position - transform.position;
+
+        GameObject head = GameObject.Find("head");
+        if (head)
+        {
+            print("found head");
+            head.GetComponent<GvrHead>().target = transform;
+        }
     }
 
     void FixedUpdate ()
@@ -31,6 +39,6 @@ public class PlayerController : MonoBehaviour {
     void updateCamera(float rotation)
     {
         Camera.main.transform.position = transform.position + offset;
-        Camera.main.transform.Rotate(0.0f, rotation*speed, 0.0f);
+        //Camera.main.transform.Rotate(0.0f, -rotation*speed, 0.0f);
     }
 }

@@ -1,8 +1,10 @@
 ﻿using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.UI;
 using System.Collections;
 
 public class LobbyManager : NetworkLobbyManager {
+    
     void Start()
     {
         StartCoroutine(CheckNetwork());
@@ -26,13 +28,16 @@ public class LobbyManager : NetworkLobbyManager {
             Debug.Log("connected as host");
         }
     }
-
+    
     public override void OnLobbyClientConnect(NetworkConnection conn)
     {
+        base.OnLobbyClientConnect(conn);
         //ClientScene.Ready(conn);
         NetworkServer.SetClientNotReady(conn);
         Debug.Log("OnLobbyClientConnect");
-        base.OnLobbyClientConnect(conn);
-        ClientScene.AddPlayer(conn, 0);
+        //print("player added: " + ClientScene.AddPlayer(conn, 0));
+        TryToAddPlayer();
+        print("number of players: " + this.numPlayers);
     }
+    
 }

@@ -4,6 +4,7 @@ using System.Collections;
 public class fall : MonoBehaviour {
 
     float fallTime;
+    float elapsedTime = 0f;
     bool rampsActive = true;
 
 	// Use this for initialization
@@ -13,12 +14,13 @@ public class fall : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        elapsedTime += Time.deltaTime;
         if (tag == "Outer")
             fallTime = 10.0f;
         else if (tag == "Mid")
             fallTime = 20.0f;
 
-	    if (Time.time > fallTime && transform.position.y > -25.0)
+	    if (elapsedTime > fallTime && transform.position.y > -25.0)
         {
             transform.Translate(Vector3.down * Time.deltaTime);
         }
