@@ -7,7 +7,15 @@ public class LobbyManager : NetworkLobbyManager {
     
     void Start()
     {
-        StartCoroutine(CheckNetwork());
+		string[] args = System.Environment.GetCommandLineArgs ();
+		if (args.Length > 0) {
+			if (args [0] == "-server") {
+				StartServer ();
+			}
+		} else {
+			StartClient ();
+		}
+//        StartCoroutine(CheckNetwork());
     }
 
     IEnumerator CheckNetwork()
@@ -25,7 +33,7 @@ public class LobbyManager : NetworkLobbyManager {
             StopClient();
             yield return new WaitForSeconds(1f);
             StartHost();
-            Debug.Log("connected as host");
+            Debug.Log("connected as server");
         }
     }
     
