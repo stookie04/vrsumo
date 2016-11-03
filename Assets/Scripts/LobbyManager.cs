@@ -8,9 +8,12 @@ public class LobbyManager : NetworkLobbyManager {
     void Start()
     {
 		string[] args = System.Environment.GetCommandLineArgs ();
-		if (args.Length > 0) {
-			if (args [0] == "-server") {
+		if (args.Length > 1) {
+			if (args [1] == "-server") {
 				StartServer ();
+				var canvas = FindObjectOfType<Canvas> ();
+				var button = canvas.GetComponentInChildren<Button> ();
+				button.GetComponentInChildren<Text> ().text = "Server";
 			}
 		} else {
 			StartClient ();
