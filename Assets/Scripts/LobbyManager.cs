@@ -5,7 +5,7 @@ using System.Collections;
 
 public class LobbyManager : NetworkLobbyManager {
     
-    void Start()
+    void Awake()
     {
 		string[] args = System.Environment.GetCommandLineArgs ();
 		if (args.Length > 1) {
@@ -44,10 +44,10 @@ public class LobbyManager : NetworkLobbyManager {
     {
         base.OnLobbyClientConnect(conn);
         //ClientScene.Ready(conn);
-        NetworkServer.SetClientNotReady(conn);
+        //NetworkServer.SetClientNotReady(conn);
         Debug.Log("OnLobbyClientConnect");
         //print("player added: " + ClientScene.AddPlayer(conn, 0));
-        TryToAddPlayer();
+        //TryToAddPlayer();
         print("number of players: " + this.numPlayers);
     }
     

@@ -24,7 +24,7 @@ GameObject:
   - 135: {fileID: 135000013348055580}
   - 54: {fileID: 54000011243448638}
   - 114: {fileID: 114000013841925496}
-  - 114: {fileID: 114000010608694836}
+  - 114: {fileID: 114000013467410762}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -96,7 +96,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &114000010608694836
+--- !u!114 &114000013467410762
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -108,7 +108,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_SceneId:
-    m_Value: 1
+    m_Value: 0
   m_AssetId:
     i0: 229
     i1: 26

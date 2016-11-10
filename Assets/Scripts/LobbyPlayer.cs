@@ -9,17 +9,13 @@ public class LobbyPlayer : NetworkLobbyPlayer {
     private float elapsedTime = 0f;
     public float GazeTimeLimit = 5f;
     
-	// Use this for initialization
-	void Start () {
-	}
-	
 	void Update() {
 	    if (time) {
             elapsedTime += Time.deltaTime;
             if (elapsedTime > GazeTimeLimit)
             {
                 print("player ready: " + this.playerControllerId);
-                readyToBegin = true;
+                //readyToBegin = true;
                 SendReadyToBeginMessage();
                 StopTimer();
             }
