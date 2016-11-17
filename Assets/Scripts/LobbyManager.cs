@@ -16,9 +16,18 @@ public class LobbyManager : NetworkLobbyManager {
 				button.GetComponentInChildren<Text> ().text = "Server";
 			}
 		} else {
-			StartClient ();
+            StartCoroutine(TryToConnect());
 		}
 //        StartCoroutine(CheckNetwork());
+    }
+
+    IEnumerator TryToConnect()
+    {
+        while (!this.isNetworkActive)
+        {
+            StartClient();
+            yield return new WaitForSeconds(2f);
+        }
     }
 
     IEnumerator CheckNetwork()
