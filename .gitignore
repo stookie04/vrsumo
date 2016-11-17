@@ -4,6 +4,7 @@
 Temp/
 Library/
 *_Data/
+vrsumo.*
 
 # ===================================== #
 # Visual Studio / MonoDevelop generated #

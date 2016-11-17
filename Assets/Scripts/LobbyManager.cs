@@ -1,13 +1,33 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
 using System.Collections;
 
 public class LobbyManager : NetworkLobbyManager {
     
-    void Start()
+    void Awake()
     {
-        StartCoroutine(CheckNetwork());
+		string[] args = System.Environment.GetCommandLineArgs ();
+		if (args.Length > 1) {
+			if (args [1] == "-server") {
+				StartServer ();
+				var canvas = FindObjectOfType<Canvas> ();
+				var button = canvas.GetComponentInChildren<Button> ();
+				button.GetComponentInChildren<Text> ().text = "Server";
+			}
+		} else {
+            StartCoroutine(TryToConnect());
+		}
+//        StartCoroutine(CheckNetwork());
+    }
+
+    IEnumerator TryToConnect()
+    {
+        while (!this.isNetworkActive)
+        {
+            StartClient();
+            yield return new WaitForSeconds(2f);
+        }
     }
 
     IEnumerator CheckNetwork()
@@ -25,7 +45,7 @@ public class LobbyManager : NetworkLobbyManager {
             StopClient();
             yield return new WaitForSeconds(1f);
             StartHost();
-            Debug.Log("connected as host");
+            Debug.Log("connected as server");
         }
     }
     
@@ -33,10 +53,10 @@ public class LobbyManager : NetworkLobbyManager {
     {
         base.OnLobbyClientConnect(conn);
         //ClientScene.Ready(conn);
-        NetworkServer.SetClientNotReady(conn);
+        //NetworkServer.SetClientNotReady(conn);
         Debug.Log("OnLobbyClientConnect");
         //print("player added: " + ClientScene.AddPlayer(conn, 0));
-        TryToAddPlayer();
+        //TryToAddPlayer();
         print("number of players: " + this.numPlayers);
     }
     

@@ -8,18 +8,29 @@ public class LobbyPlayer : NetworkLobbyPlayer {
     private bool time = false;
     private float elapsedTime = 0f;
     public float GazeTimeLimit = 5f;
+
+    private Button readyButton;
     
-	// Use this for initialization
-	void Start () {
-	}
-	
+    void Awake()
+    {
+        Canvas canvas = (Canvas)FindObjectOfType(typeof(Canvas));
+        if (canvas)
+        {
+            readyButton = canvas.GetComponentInChildren<Button>();
+            if (readyButton)
+                readyButton.GetComponentInChildren<Text>().text = "Ready?";
+        }
+    }
+
 	void Update() {
 	    if (time) {
             elapsedTime += Time.deltaTime;
+            if (readyButton)
+                readyButton.GetComponentInChildren<Text>().text = "Ready in " + (int)(GazeTimeLimit-elapsedTime) + "...";
             if (elapsedTime > GazeTimeLimit)
             {
                 print("player ready: " + this.playerControllerId);
-                readyToBegin = true;
+                //readyToBegin = true;
                 SendReadyToBeginMessage();
                 StopTimer();
             }
@@ -32,6 +43,8 @@ public class LobbyPlayer : NetworkLobbyPlayer {
         {
             elapsedTime = 0f;
             time = true;
+            if (readyButton)
+                readyButton.GetComponentInChildren<Text>().text = "Ready in " + (int)(GazeTimeLimit) + "...";
         }
     }
 
@@ -41,6 +54,8 @@ public class LobbyPlayer : NetworkLobbyPlayer {
         {
             time = false;
             elapsedTime = 0f;
+            if (readyButton)
+                readyButton.GetComponentInChildren<Text>().text = "Ready?";
         }
     }
 }
