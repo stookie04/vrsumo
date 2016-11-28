@@ -29,10 +29,11 @@ public class LobbyPlayer : NetworkLobbyPlayer {
                 readyButton.GetComponentInChildren<Text>().text = "Ready in " + (int)(GazeTimeLimit-elapsedTime) + "...";
             if (elapsedTime > GazeTimeLimit)
             {
-                print("player ready: " + this.playerControllerId);
                 //readyToBegin = true;
                 SendReadyToBeginMessage();
                 StopTimer();
+                if (readyButton)
+                    readyButton.GetComponentInChildren<Text>().text = "Starting";
             }
         }
 	}

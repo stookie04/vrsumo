@@ -1,3 +1,5 @@
+#define CLIENT
+
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
@@ -7,18 +9,16 @@ public class LobbyManager : NetworkLobbyManager {
     
     void Awake()
     {
-		string[] args = System.Environment.GetCommandLineArgs ();
-		if (args.Length > 1) {
-			if (args [1] == "-server") {
-				StartServer ();
-				var canvas = FindObjectOfType<Canvas> ();
-				var button = canvas.GetComponentInChildren<Button> ();
-				button.GetComponentInChildren<Text> ().text = "Server";
-			}
-		} else {
-            StartCoroutine(TryToConnect());
-		}
-//        StartCoroutine(CheckNetwork());
+#if SERVER
+        StartServer ();
+        var canvas = FindObjectOfType<Canvas> ();
+        var button = canvas.GetComponentInChildren<Button> ();
+        button.GetComponentInChildren<Text> ().text = "Server";
+#endif
+
+#if CLIENT
+        StartCoroutine(TryToConnect());
+#endif
     }
 
     IEnumerator TryToConnect()
@@ -30,34 +30,21 @@ public class LobbyManager : NetworkLobbyManager {
         }
     }
 
-    IEnumerator CheckNetwork()
+    public override void OnLobbyServerConnect(NetworkConnection conn)
     {
-        Debug.Log("IsClientConnected: " + IsClientConnected());
-        StartClient();
-        yield return new WaitForSeconds(2f);
-        Debug.Log("IsClientConnected: " + IsClientConnected());
-        if (IsClientConnected())
+        base.OnLobbyServerConnect(conn);
+        var canvas = FindObjectOfType<Canvas>();
+        var button = canvas.GetComponentInChildren<Button>();
+        button.GetComponentInChildren<Text>().text = this.numPlayers + " Player(s)";
+    }
+
+    public override void OnLobbyServerDisconnect(NetworkConnection conn)
+    {
+        base.OnLobbyServerDisconnect(conn);
+        if (this.numPlayers < 1)
         {
-            Debug.Log("connected as client");
-        }
-        else
-        {
-            StopClient();
-            yield return new WaitForSeconds(1f);
-            StartHost();
-            Debug.Log("connected as server");
+            StopServer();
+            ServerReturnToLobby();
         }
     }
-    
-    public override void OnLobbyClientConnect(NetworkConnection conn)
-    {
-        base.OnLobbyClientConnect(conn);
-        //ClientScene.Ready(conn);
-        //NetworkServer.SetClientNotReady(conn);
-        Debug.Log("OnLobbyClientConnect");
-        //print("player added: " + ClientScene.AddPlayer(conn, 0));
-        //TryToAddPlayer();
-        print("number of players: " + this.numPlayers);
-    }
-    
 }

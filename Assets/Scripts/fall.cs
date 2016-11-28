@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using Gvr;
 using System.Collections;
 
 public class fall : MonoBehaviour {
@@ -41,6 +42,11 @@ public class fall : MonoBehaviour {
             {
                 go.SetActive(false);
             }
+            //GvrHead head = (GvrHead)FindObjectOfType(typeof(GvrHead));
+            //if (head)
+            //{
+                //head.trackRotation = true;
+            //}
         }
     }
 }
