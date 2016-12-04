@@ -17,9 +17,9 @@ public class fall : MonoBehaviour {
 	void Update () {
         elapsedTime += Time.deltaTime;
         if (tag == "Outer")
-            fallTime = 10.0f;
-        else if (tag == "Mid")
             fallTime = 20.0f;
+        else if (tag == "Mid")
+            fallTime = 35.0f;
 
 	    if (elapsedTime > fallTime && transform.position.y > -25.0)
         {

@@ -16,6 +16,9 @@ public class PlayerController : NetworkBehaviour {
 
     void Start ()
 	{
+        if (!isLocalPlayer)
+            return;
+
 		rb = GetComponent<Rigidbody>();
         //transform.position = Camera.main.transform.position;
         //offset = Camera.main.transform.position - transform.position;
