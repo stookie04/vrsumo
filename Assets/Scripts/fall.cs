@@ -26,9 +26,20 @@ public class fall : MonoBehaviour {
             transform.Translate(Vector3.down * Time.deltaTime);
         }
 
+		if (transform.position.y <= -10.0) {
+			
+			// Activate Death Cube fade
+			GameObject[] dcs = GameObject.FindGameObjectsWithTag ("deathcube");
+			foreach (GameObject deathcube in dcs)
+			{
+				deathcube.SetActive(false);
+			}
+		}
+
         if (transform.position.y <= -25.0)
         {
-            Destroy(gameObject);
+			// Destroy game object
+			Destroy(gameObject);
         }
 	}
 

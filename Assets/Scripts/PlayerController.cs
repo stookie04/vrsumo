@@ -12,6 +12,8 @@ public class PlayerController : NetworkBehaviour {
 
     private GvrHead head;
 
+	private bool deathCubeActive;
+
     void Start ()
 	{
 		rb = GetComponent<Rigidbody>();
@@ -30,7 +32,22 @@ public class PlayerController : NetworkBehaviour {
         if (!isLocalPlayer)
             return;
 
-        if (transform.position.y < 0.0f)
+		Debug.Log(transform.position.y);
+
+		if ((transform.position.y <= -15.0f) & (!deathCubeActive)) {
+			// Activate Death Cube fade
+			deathcube[] dcs = (deathcube[])FindObjectsOfType(typeof(deathcube));
+			if (dcs.Length > 0)
+				Debug.Break();
+			foreach (deathcube deathcube in dcs)
+			{
+				//Debug.Log("Activated!");
+				deathCubeActive = true;
+				deathcube.StartColorFade();
+			}
+		}
+
+        if (transform.position.y < -30.0f)
         {
             rb.AddTorque(Vector3.zero);
             rb.isKinematic = true;
