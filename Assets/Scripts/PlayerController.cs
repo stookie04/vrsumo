@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEngine.Networking;
 using System.Collections;
 
@@ -55,7 +55,20 @@ public class PlayerController : NetworkBehaviour {
             rb.isKinematic = false;
         }
 
-        if (transform.position.y < -0.0f)
+	if ((transform.position.y <= -15.0f) & (!deathCubeActive)) {
+		// Activate Death Cube fade
+		deathcube[] dcs = (deathcube[])FindObjectsOfType(typeof(deathcube));
+		if (dcs.Length > 0)
+		Debug.Break();
+		foreach (deathcube deathcube in dcs){
+			//Debug.Log("Activated!");
+			deathCubeActive = true;
+			deathcube.StartColorFade();
+		}
+	}
+
+
+        if (transform.position.y < —30.0f)
         {
             rb.AddTorque(Vector3.zero);
             rb.isKinematic = true;
