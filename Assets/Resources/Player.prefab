@@ -160,7 +160,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d416034712b084fd181d6e0853e8f78d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 2
+  speed: 3
   offset: {x: 0, y: 0, z: 0}
 --- !u!135 &135000013348055580
 SphereCollider:

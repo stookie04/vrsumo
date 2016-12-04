@@ -25,14 +25,15 @@ public class LobbyPlayer : NetworkLobbyPlayer {
 	void Update() {
 	    if (time) {
             elapsedTime += Time.deltaTime;
-            if (readyButton)
+            if (isLocalPlayer && readyButton)
                 readyButton.GetComponentInChildren<Text>().text = "Ready in " + (int)(GazeTimeLimit-elapsedTime) + "...";
             if (elapsedTime > GazeTimeLimit)
             {
                 //readyToBegin = true;
+                print("send ready");
                 SendReadyToBeginMessage();
                 StopTimer();
-                if (readyButton)
+                if (isLocalPlayer && readyButton)
                     readyButton.GetComponentInChildren<Text>().text = "Starting";
             }
         }
@@ -44,7 +45,7 @@ public class LobbyPlayer : NetworkLobbyPlayer {
         {
             elapsedTime = 0f;
             time = true;
-            if (readyButton)
+            if (isLocalPlayer && readyButton)
                 readyButton.GetComponentInChildren<Text>().text = "Ready in " + (int)(GazeTimeLimit) + "...";
         }
     }
@@ -55,7 +56,7 @@ public class LobbyPlayer : NetworkLobbyPlayer {
         {
             time = false;
             elapsedTime = 0f;
-            if (readyButton)
+            if (isLocalPlayer && readyButton)
                 readyButton.GetComponentInChildren<Text>().text = "Ready?";
         }
     }

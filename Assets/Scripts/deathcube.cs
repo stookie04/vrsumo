@@ -30,7 +30,7 @@ public class deathcube : MonoBehaviour {
 		Renderer rend = GetComponent<Renderer> ();
 
 		Color color = GetComponent<Renderer> ().material.color;
-		Debug.Log (color.a);
+
 		if ((color.a < 1.0f) & (fade)){
 			Color newColor = new Color (color.r, color.g, color.b, Mathf.Min (1.0f, color.a + (Time.deltaTime / timeToFade)));
 			GetComponent<Renderer> ().material.color = newColor;
