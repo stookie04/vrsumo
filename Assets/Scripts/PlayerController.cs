@@ -12,6 +12,8 @@ public class PlayerController : NetworkBehaviour {
 
     private GvrHead head;
 
+    private float elapsedTime = 0.0f;
+
     void Start ()
 	{
 		rb = GetComponent<Rigidbody>();
@@ -33,9 +35,16 @@ public class PlayerController : NetworkBehaviour {
         if (!isLocalPlayer)
             return;
 
-        if (transform.position.y > 5.0f)
+        // Give user time to face in the right direction
+        elapsedTime += Time.deltaTime;
+        if (elapsedTime < 3f)
         {
+            rb.isKinematic = true;
             return;
+        }
+        else
+        {
+            rb.isKinematic = false;
         }
 
         if (transform.position.y < -0.0f)
