@@ -35,6 +35,11 @@ public class PlayerController : NetworkBehaviour {
         if (!isLocalPlayer)
             return;
 
+        if (rb.transform.position.y > 2f)
+            rb.angularDrag = 2.0f;
+        else
+            rb.angularDrag = 0.2f;
+
         // Give user time to face in the right direction
         elapsedTime += Time.deltaTime;
         if (elapsedTime < 3f)
