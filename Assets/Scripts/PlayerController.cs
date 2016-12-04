@@ -2,11 +2,12 @@ using UnityEngine;
 using UnityEngine.Networking;
 using System.Collections;
 
-public class PlayerController : NetworkBehaviour {
+public class PlayerController : NetworkBehaviour
+{
 
-	public float speed = 3.0f;
+    public float speed = 3.0f;
 
-	private Rigidbody rb;
+    private Rigidbody rb;
 
     public Vector3 offset;
 
@@ -14,12 +15,14 @@ public class PlayerController : NetworkBehaviour {
 
     private float elapsedTime = 0.0f;
 
-    void Start ()
-	{
+    private bool deathCubeActive = false;
+
+    void Start()
+    {
         if (!isLocalPlayer)
             return;
 
-		rb = GetComponent<Rigidbody>();
+        rb = GetComponent<Rigidbody>();
         //transform.position = Camera.main.transform.position;
         //offset = Camera.main.transform.position - transform.position;
 
@@ -32,8 +35,8 @@ public class PlayerController : NetworkBehaviour {
         //Camera.main.transform.rotation = Quaternion.LookRotation(Vector3.zero - Camera.main.transform.position);
     }
 
-    void Update ()
-	{
+    void Update()
+    {
 
         if (!isLocalPlayer)
             return;
@@ -55,20 +58,21 @@ public class PlayerController : NetworkBehaviour {
             rb.isKinematic = false;
         }
 
-	if ((transform.position.y <= -15.0f) & (!deathCubeActive)) {
-		// Activate Death Cube fade
-		deathcube[] dcs = (deathcube[])FindObjectsOfType(typeof(deathcube));
-		if (dcs.Length > 0)
-		Debug.Break();
-		foreach (deathcube deathcube in dcs){
-			//Debug.Log("Activated!");
-			deathCubeActive = true;
-			deathcube.StartColorFade();
-		}
-	}
+        if ((transform.position.y <= -15.0f) & (!deathCubeActive))
+        {
+            // Activate Death Cube fade
+            deathcube[] dcs = (deathcube[])FindObjectsOfType(typeof(deathcube));
+            if (dcs.Length > 0)
+                foreach (deathcube deathcube in dcs)
+                {
+                    //Debug.Log("Activated!");
+                    deathCubeActive = true;
+                    deathcube.StartColorFade();
+                }
+        }
 
 
-        if (transform.position.y < —30.0f)
+        if (transform.position.y < -30.0f)
         {
             rb.AddTorque(Vector3.zero);
             rb.isKinematic = true;
@@ -76,7 +80,7 @@ public class PlayerController : NetworkBehaviour {
         }
 
         //float forwardMotion = 10;// Input.GetAxis ("Vertical");
-        float rotation = Input.GetAxis ("Horizontal");
+        float rotation = Input.GetAxis("Horizontal");
 
         //Vector3 leftVector = Vector3.Cross (Camera.main.transform.right, Vector3.up);
         //Debug.DrawRay (transform.position, leftVector * 10, Color.blue);
@@ -86,7 +90,7 @@ public class PlayerController : NetworkBehaviour {
             rb.AddForce(head.Gaze.direction * 1000 * Time.deltaTime);
         }
         updateCamera(rotation);
-	}
+    }
 
     void updateCamera(float rotation)
     {
