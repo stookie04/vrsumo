@@ -15,7 +15,8 @@ public class PlayerController : NetworkBehaviour
 
     private float elapsedTime = 0.0f;
 
-    private bool deathCubeActive = false;
+    private bool deathCubeDead = false;
+	private bool playerIsViewer = false;
 
     void Start()
     {
@@ -58,24 +59,35 @@ public class PlayerController : NetworkBehaviour
             rb.isKinematic = false;
         }
 
-        if ((transform.position.y <= -15.0f) & (!deathCubeActive))
+		if ((transform.position.y <= -5.0f) & (!deathCubeDead))
         {
             // Activate Death Cube fade
             deathcube[] dcs = (deathcube[])FindObjectsOfType(typeof(deathcube));
-            if (dcs.Length > 0)
-                foreach (deathcube deathcube in dcs)
-                {
-                    //Debug.Log("Activated!");
-                    deathCubeActive = true;
-                    deathcube.StartColorFade();
-                }
+			if (dcs.Length > 0) {
+				foreach (deathcube deathcube in dcs) {
+					//Debug.Log("Activated!");
+					deathCubeDead = true;
+					deathcube.StartFadeOut ();
+				}
+			}
         }
 
 
-        if (transform.position.y < -30.0f)
+		if ((transform.position.y < -30.0f) & (!playerIsViewer))
         {
             rb.AddTorque(Vector3.zero);
             rb.isKinematic = true;
+
+			// Activate Death Cube fade
+			deathcube[] dcs = (deathcube[])FindObjectsOfType(typeof(deathcube));
+			if (dcs.Length > 0) {
+				foreach (deathcube deathcube in dcs) {
+					//Debug.Log("Activated!");
+					playerIsViewer = true;
+					deathcube.StartFadeIn();
+				}
+			}
+
             return;
         }
 
