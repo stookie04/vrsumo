@@ -37,27 +37,28 @@ public class PlayerController : NetworkBehaviour
     }
 
     void Update()
-    {
+	{
 
-        if (!isLocalPlayer)
-            return;
+		if (!isLocalPlayer)
+			return;
 
-        if (rb.transform.position.y > 2f)
-            rb.angularDrag = 2.0f;
-        else
-            rb.angularDrag = 0.2f;
+		// Check that we have not placed the player at the top to watch the game
+		if (!playerIsViewer) {
+			if (rb.transform.position.y > 2f)
+				rb.angularDrag = 2.0f;
+			else
+				rb.angularDrag = 0.2f;
 
-        // Give user time to face in the right direction
-        elapsedTime += Time.deltaTime;
-        if (elapsedTime < 3f)
-        {
-            rb.isKinematic = true;
-            return;
-        }
-        else
-        {
-            rb.isKinematic = false;
-        }
+			// Give user time to face in the right direction
+			elapsedTime += Time.deltaTime;
+			if (elapsedTime < 3f) {
+				rb.isKinematic = true;
+				return;
+			} else {
+				rb.isKinematic = false;
+			}
+		}
+
 
 		if ((transform.position.y <= -5.0f) & (!deathCubeDead))
         {
@@ -70,7 +71,8 @@ public class PlayerController : NetworkBehaviour
 					deathcube.StartFadeOut ();
 				}
 			}
-        }
+        
+		}
 
 
 		if ((transform.position.y < -30.0f) & (!playerIsViewer))
