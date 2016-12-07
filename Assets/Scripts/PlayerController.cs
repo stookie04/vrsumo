@@ -17,8 +17,9 @@ public class PlayerController : NetworkBehaviour
 
     private float elapsedTime = 0.0f;
 
-    private bool deathCubeActive = false;
-    
+    private bool deathCubeDead = false;
+	private bool playerIsViewer = false;
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -48,44 +49,62 @@ public class PlayerController : NetworkBehaviour
 
     void Update()
     {
-        // Give user time to face in the right direction
-        elapsedTime += Time.deltaTime;
-        if (elapsedTime < 3f)
+        // Check that we have not placed the player at the top to watch the game
+        if (!playerIsViewer)
         {
-            rb.isKinematic = true;
-            return;
-        }
-        else
-        {
-            rb.isKinematic = false;
-        }
+            if (rb.transform.position.y > 2f)
+                rb.angularDrag = 2.0f;
+            else
+                rb.angularDrag = 0.2f;
 
-        if (rb.transform.position.y > 2f)
-            rb.angularDrag = 2.0f;
-        else
-            rb.angularDrag = 0.2f;
+            // Give user time to face in the right direction
+            elapsedTime += Time.deltaTime;
+            if (elapsedTime < 3f)
+            {
+                rb.isKinematic = true;
+            }
+            else
+            {
+                rb.isKinematic = false;
+            }
+        }
 
         if (!isLocalPlayer)
             return;
 
-        if ((transform.position.y <= -15.0f) & (!deathCubeActive))
+        if ((transform.position.y <= -5.0f) & (!deathCubeDead))
         {
             // Activate Death Cube fade
             deathcube[] dcs = (deathcube[])FindObjectsOfType(typeof(deathcube));
             if (dcs.Length > 0)
+            {
                 foreach (deathcube deathcube in dcs)
                 {
                     //Debug.Log("Activated!");
-                    deathCubeActive = true;
-                    deathcube.StartColorFade();
+                    deathCubeDead = true;
+                    deathcube.StartFadeOut();
                 }
+            }
+
         }
 
-
-        if (transform.position.y < -30.0f)
+        if ((transform.position.y < -30.0f) & (!playerIsViewer))
         {
             rb.AddTorque(Vector3.zero);
             rb.isKinematic = true;
+
+            // Activate Death Cube fade
+            deathcube[] dcs = (deathcube[])FindObjectsOfType(typeof(deathcube));
+            if (dcs.Length > 0)
+            {
+                foreach (deathcube deathcube in dcs)
+                {
+                    //Debug.Log("Activated!");
+                    playerIsViewer = true;
+                    deathcube.StartFadeIn();
+                }
+            }
+
             return;
         }
 

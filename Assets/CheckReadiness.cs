@@ -7,29 +7,23 @@ using System;
 public class CheckReadiness : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
 
-    private LobbyPlayer lobbyPlayer;
+    public static LobbyPlayer lobbyPlayer;
     private bool gazing = false;
 
     // Use this for initialization
     void Start()
     {
-        lobbyPlayer = (LobbyPlayer)FindObjectOfType(typeof(LobbyPlayer));
+        //lobbyPlayer = (LobbyPlayer)FindObjectOfType(typeof(LobbyPlayer));
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (!lobbyPlayer)
-        {
-            //print("still trying to find player");
-            lobbyPlayer = (LobbyPlayer)FindObjectOfType(typeof(LobbyPlayer));
-        
             if (gazing && lobbyPlayer)
             {
                 lobbyPlayer.StartTimer();
                 gazing = false;
             }
-        }
     }
 
     public void OnPointerEnter(PointerEventData eventData)
