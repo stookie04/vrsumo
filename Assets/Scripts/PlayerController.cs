@@ -4,6 +4,8 @@ using System.Collections;
 
 public class PlayerController : NetworkBehaviour
 {
+    [SyncVar]
+    private Color chosenColor = Color.white;
 
     public float speed = 3.0f;
 
@@ -16,13 +18,17 @@ public class PlayerController : NetworkBehaviour
     private float elapsedTime = 0.0f;
 
     private bool deathCubeActive = false;
-
+    
     void Start()
     {
+        rb = GetComponent<Rigidbody>();
+        Debug.Log("Setting color " + chosenColor);
+        foreach (Material mat in gameObject.GetComponent<MeshRenderer>().materials)
+            mat.color = chosenColor;
+
         if (!isLocalPlayer)
             return;
 
-        rb = GetComponent<Rigidbody>();
         //transform.position = Camera.main.transform.position;
         //offset = Camera.main.transform.position - transform.position;
 
@@ -35,17 +41,13 @@ public class PlayerController : NetworkBehaviour
         //Camera.main.transform.rotation = Quaternion.LookRotation(Vector3.zero - Camera.main.transform.position);
     }
 
+    public override void OnStartServer()
+    {
+        chosenColor = Random.ColorHSV(0f, 1f, 1f, 1f, 0.5f, 1f);
+    }
+
     void Update()
     {
-
-        if (!isLocalPlayer)
-            return;
-
-        if (rb.transform.position.y > 2f)
-            rb.angularDrag = 2.0f;
-        else
-            rb.angularDrag = 0.2f;
-
         // Give user time to face in the right direction
         elapsedTime += Time.deltaTime;
         if (elapsedTime < 3f)
@@ -57,6 +59,14 @@ public class PlayerController : NetworkBehaviour
         {
             rb.isKinematic = false;
         }
+
+        if (rb.transform.position.y > 2f)
+            rb.angularDrag = 2.0f;
+        else
+            rb.angularDrag = 0.2f;
+
+        if (!isLocalPlayer)
+            return;
 
         if ((transform.position.y <= -15.0f) & (!deathCubeActive))
         {
@@ -85,7 +95,7 @@ public class PlayerController : NetworkBehaviour
         //Vector3 leftVector = Vector3.Cross (Camera.main.transform.right, Vector3.up);
         //Debug.DrawRay (transform.position, leftVector * 10, Color.blue);
         //rb.AddTorque (head.Gaze.direction * 200f * Time.deltaTime);
-        if (rb.velocity.magnitude < speed)
+        if ((rb.transform.position.y < 3f) && (rb.velocity.magnitude < speed))
         {
             rb.AddForce(head.Gaze.direction * 1000 * Time.deltaTime);
         }
