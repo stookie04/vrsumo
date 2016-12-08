@@ -7,6 +7,9 @@ public class PlayerController : NetworkBehaviour
     [SyncVar]
     private Color chosenColor = Color.white;
 
+    [SyncVar]
+    private bool winner = false;
+
     public float speed = 3.0f;
 
     private Rigidbody rb;
@@ -49,6 +52,12 @@ public class PlayerController : NetworkBehaviour
 
     void Update()
     {
+        if (winner)
+        {
+            rb.isKinematic = true;
+            return;
+        }
+
         // Check that we have not placed the player at the top to watch the game
         if (!playerIsViewer)
         {
@@ -93,6 +102,8 @@ public class PlayerController : NetworkBehaviour
             rb.AddTorque(Vector3.zero);
             rb.isKinematic = true;
 
+            playerIsViewer = true;
+
             // Activate Death Cube fade
             deathcube[] dcs = (deathcube[])FindObjectsOfType(typeof(deathcube));
             if (dcs.Length > 0)
@@ -100,10 +111,11 @@ public class PlayerController : NetworkBehaviour
                 foreach (deathcube deathcube in dcs)
                 {
                     //Debug.Log("Activated!");
-                    playerIsViewer = true;
                     deathcube.StartFadeIn();
                 }
             }
+
+            transform.position = new Vector3(0f,20.0f,0f);
 
             return;
         }
@@ -130,4 +142,13 @@ public class PlayerController : NetworkBehaviour
         //Camera.main.transform.position = transform.position + offset; 
         //Camera.main.transform.Rotate(0.0f, -rotation*speed, 0.0f);
     }
+
+    public void SetWinner()
+    {
+        if (!isServer)
+            return;
+
+        winner = true;
+    }
+
 }

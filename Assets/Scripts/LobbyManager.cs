@@ -112,12 +112,14 @@ public class LobbyManager : NetworkLobbyManager {
         bool havePlayers = false;
         // check if all except one player is dead
         GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+        GameObject potentialWinner = null;
         foreach (GameObject pObj in players)
         {
             havePlayers = true;
             if (pObj.transform.position.y >= 1.8f && pObj.transform.position.y < 15.0f)
             {
                 ++alive;
+                potentialWinner = pObj;
             }
         }
         
@@ -126,9 +128,18 @@ public class LobbyManager : NetworkLobbyManager {
             time = 0f;
             checkAlive = false;
             //StopServer();
-            ServerReturnToLobby();
+            //ServerReturnToLobby();
+            if (potentialWinner)
+                potentialWinner.GetComponent<PlayerController>().SetWinner();
+            StartCoroutine(ReturnToLobby());
         }
 #endif
+    }
+
+    IEnumerator ReturnToLobby()
+    {
+        yield return new WaitForSeconds(10f);
+        ServerReturnToLobby();
     }
 
 }

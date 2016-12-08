@@ -34,6 +34,12 @@ public class fall : MonoBehaviour {
 
     void OnCollisionEnter(Collision col)
     {
+        StartCoroutine(HideRamps(col));
+    }
+
+    IEnumerator HideRamps(Collision col)
+    {
+        yield return new WaitForSeconds(2f);
         if (col.gameObject.tag == "Player" && rampsActive)
         {
             rampsActive = false;
@@ -42,11 +48,6 @@ public class fall : MonoBehaviour {
             {
                 go.SetActive(false);
             }
-            //GvrHead head = (GvrHead)FindObjectOfType(typeof(GvrHead));
-            //if (head)
-            //{
-                //head.trackRotation = true;
-            //}
         }
     }
 }
