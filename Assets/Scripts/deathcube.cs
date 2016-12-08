@@ -70,13 +70,13 @@ public class deathcube : MonoBehaviour {
 			fadeout = false; // fadeout is complete
 			alpha = 1.0f; // clamp to alpha of 1.0
 			GetComponent<Renderer> ().material = youWin;
-			winMessage = false;
+			//winMessage = false;
 			fadeoutComplete = true;
 		}
 			
 		//Debug.Log (timeForMessage);
 		// Implement wait time for reader to read win/lose message
-		if ((alpha >= 1.0f) & (timeForMessage > 0.0f) & (fadeoutComplete)) {
+		if ((alpha >= 1.0f) & (timeForMessage > 0.0f) & (fadeoutComplete) & (!winMessage)) {
 			timeForMessage = timeForMessage - Time.deltaTime;
 		}
 		// In the lose scenario this might be redundant.
