@@ -52,26 +52,6 @@ public class PlayerController : NetworkBehaviour
 
     void Update()
     {
-        if (winner)
-        {
-            rb.isKinematic = true;
-
-			// Start Win Fade Out. No Fade in necessary? Or is it when back in the lobby
-			// Maybe add a wait manually? For both win and lose!
-			if (!deathCubeDead) {
-				// Activate Death Cube fade
-				deathcube[] dcs = (deathcube[])FindObjectsOfType (typeof(deathcube));
-				if (dcs.Length > 0) {
-					foreach (deathcube deathcube in dcs) {
-						//Debug.Log("Activated!");
-						deathCubeDead = true;
-						deathcube.SetWin();
-					}
-				}
-			}
-            return;
-        }
-
         // Check that we have not placed the player at the top to watch the game
         if (!playerIsViewer)
         {
@@ -94,6 +74,26 @@ public class PlayerController : NetworkBehaviour
 
         if (!isLocalPlayer)
             return;
+
+		if (winner)
+		{
+			rb.isKinematic = true;
+
+			// Start Win Fade Out. No Fade in necessary? Or is it when back in the lobby
+			// Maybe add a wait manually? For both win and lose!
+			if (!deathCubeDead) {
+				// Activate Death Cube fade
+				deathcube[] dcs = (deathcube[])FindObjectsOfType (typeof(deathcube));
+				if (dcs.Length > 0) {
+					foreach (deathcube deathcube in dcs) {
+						//Debug.Log("Activated!");
+						deathCubeDead = true;
+						deathcube.SetWin();
+					}
+				}
+			}
+			return;
+		}
 
 		// Check if player has fallen off of platform
         if ((transform.position.y <= -5.0f) & (!deathCubeDead))
