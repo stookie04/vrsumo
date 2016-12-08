@@ -81,6 +81,7 @@ public class PlayerController : NetworkBehaviour
         if (!isLocalPlayer)
             return;
 
+		// Check if player has fallen off of platform
         if ((transform.position.y <= -5.0f) & (!deathCubeDead))
         {
             // Activate Death Cube fade
@@ -110,11 +111,13 @@ public class PlayerController : NetworkBehaviour
             {
                 foreach (deathcube deathcube in dcs)
                 {
-                    //Debug.Log("Activated!");
-                    deathcube.StartFadeIn();
+					// Comment out because fade in logic has been moved to deathcube.
+					// Current wait is 2 seconds to read you lose message
+                    //deathcube.StartFadeIn();
                 }
             }
 
+			// Should only have to do this once...
             transform.position = new Vector3(0f,20.0f,0f);
 
             return;
@@ -145,10 +148,26 @@ public class PlayerController : NetworkBehaviour
 
     public void SetWinner()
     {
-        if (!isServer)
-            return;
 
-        winner = true;
+		// Start Win Fade Out. No Fade in necessary? Or is it when back in the lobby
+		// Maybe add a wait manually? For both win and lose!
+		if (!deathCubeDead) {
+			// Activate Death Cube fade
+			deathcube[] dcs = (deathcube[])FindObjectsOfType (typeof(deathcube));
+			if (dcs.Length > 0) {
+				foreach (deathcube deathcube in dcs) {
+					//Debug.Log("Activated!");
+					deathCubeDead = true;
+					deathcube.SetWin();
+				}
+			}
+		}
+
+		if (!isServer)
+			return;
+
+		winner = true;
+
     }
 
 }

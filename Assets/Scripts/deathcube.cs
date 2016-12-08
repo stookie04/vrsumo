@@ -4,10 +4,16 @@ using System.Collections;
 public class deathcube : MonoBehaviour {
 
 	float timeToFade = 1.0f;
+	float timeForMessage = 1.5f;
 	//float elapsedTime = 0f;
 
 	bool fadein = false;
 	bool fadeout = false;
+	bool loseMessage = false;
+	bool winMessage = false;
+	public Material youLose;
+	public Material youWin;
+	float alpha = 0.0f;
 
 	// Use this for do once at start behaviors
 	void Activate(){
@@ -29,23 +35,63 @@ public class deathcube : MonoBehaviour {
 	public void StartFadeIn(){
 		fadein = true;
 	}
+
+	public void SetLose(){
+		loseMessage = true;
+	}
+
+	public void SetWin(){
+		StartFadeOut();
+		winMessage = true;
+	}
 	
 	// Update is called once per frame
 	void Update () {
-		Renderer rend = GetComponent<Renderer> ();
 
-		Color color = GetComponent<Renderer> ().material.color;
+		//Color color = GetComponent<Renderer> ().material.color;
 
-		if ((color.a < 1.0f) & (fadeout)){
-			Color newColor = new Color (color.r, color.g, color.b, Mathf.Min (1.0f, color.a + (Time.deltaTime / timeToFade)));
+		if ((alpha < 1.0f) & (fadeout)){
+			alpha = Mathf.Min(1.0f, alpha + (Time.deltaTime / timeToFade));
+			Color newColor = new Color (0.0f, 0.0f, 0.0f, alpha);
 			GetComponent<Renderer> ().material.color = newColor;
 		}
+		//Display you lose symbol before fading back in.
+		if ((alpha >= 1.0f) & (loseMessage)){
+			fadeout = false; // fadeout is complete
+			alpha = 1.0f; // clamp to alpha of 1.0
+			GetComponent<Renderer> ().material = youLose;
+			loseMessage = false; //only run this function once
+		}
+		//Display you win message before fading back in.
+		if ((alpha >= 1.0f) & (winMessage)){
+			fadeout = false; // fadeout is complete
+			alpha = 1.0f; // clamp to alpha of 1.0
+			GetComponent<Renderer> ().material = youWin;
+			winMessage = false;
+		}
 
-		if ((color.a > 0.0f) & (fadein)){
-			Color newColor = new Color (color.r, color.g, color.b, Mathf.Max (0.0f, color.a - (Time.deltaTime / timeToFade)));
+		// Implement wait time for reader to read win/lose message
+		if ((alpha >= 1.0f) & (timeForMessage > 0.0f)) {
+			timeForMessage = timeForMessage - Time.deltaTime;
+		}
+		// In the lose scenario this might be redundant.
+		// Comment out fade back in logic from Player Controller.
+		if ((alpha >= 1.0f) & (timeForMessage <= 0.0f)) {
+			StartFadeIn();
+		}
+
+
+		//begin fading back in as viewer
+		if ((alpha > 0.0f) & (fadein)){
+			alpha = Mathf.Max (1.0f, alpha - (Time.deltaTime / timeToFade));
+			Color newColor = new Color (0.0f, 0.0f, 0.0f, alpha);
 			GetComponent<Renderer> ().material.color = newColor;
 		}
-	
+		//fade in over
+		if ((alpha <= 0.0f) & (fadein)){
+			fadein = false;
+			alpha = 0.0f; //clamp to alpha of zero.
+		}
 	}
 }
 
