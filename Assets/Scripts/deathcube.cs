@@ -15,6 +15,7 @@ public class deathcube : MonoBehaviour {
 	public Material youWin;
 	float alpha = 0.0f;
 
+
 	// Use this for do once at start behaviors
 	void Activate(){
 		
@@ -69,9 +70,10 @@ public class deathcube : MonoBehaviour {
 			GetComponent<Renderer> ().material = youWin;
 			winMessage = false;
 		}
-
+			
+		Debug.Log (timeForMessage);
 		// Implement wait time for reader to read win/lose message
-		if ((alpha >= 1.0f) & (timeForMessage > 0.0f) & (!youLose) & (!youWin)) {
+		if ((alpha >= 1.0f) & (timeForMessage > 0.0f) & (!loseMessage) & (!winMessage) & (!fadeout)) {
 			timeForMessage = timeForMessage - Time.deltaTime;
 		}
 		// In the lose scenario this might be redundant.
