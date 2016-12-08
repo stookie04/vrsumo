@@ -55,6 +55,20 @@ public class PlayerController : NetworkBehaviour
         if (winner)
         {
             rb.isKinematic = true;
+
+			// Start Win Fade Out. No Fade in necessary? Or is it when back in the lobby
+			// Maybe add a wait manually? For both win and lose!
+			if (!deathCubeDead) {
+				// Activate Death Cube fade
+				deathcube[] dcs = (deathcube[])FindObjectsOfType (typeof(deathcube));
+				if (dcs.Length > 0) {
+					foreach (deathcube deathcube in dcs) {
+						//Debug.Log("Activated!");
+						deathCubeDead = true;
+						deathcube.SetWin();
+					}
+				}
+			}
             return;
         }
 
@@ -93,6 +107,7 @@ public class PlayerController : NetworkBehaviour
                     //Debug.Log("Activated!");
                     deathCubeDead = true;
                     deathcube.StartFadeOut();
+					deathcube.SetLose ();
                 }
             }
 
@@ -148,20 +163,6 @@ public class PlayerController : NetworkBehaviour
 
     public void SetWinner()
     {
-
-		// Start Win Fade Out. No Fade in necessary? Or is it when back in the lobby
-		// Maybe add a wait manually? For both win and lose!
-		if (!deathCubeDead) {
-			// Activate Death Cube fade
-			deathcube[] dcs = (deathcube[])FindObjectsOfType (typeof(deathcube));
-			if (dcs.Length > 0) {
-				foreach (deathcube deathcube in dcs) {
-					//Debug.Log("Activated!");
-					deathCubeDead = true;
-					deathcube.SetWin();
-				}
-			}
-		}
 
 		if (!isServer)
 			return;

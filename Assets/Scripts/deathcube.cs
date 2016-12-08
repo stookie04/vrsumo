@@ -71,7 +71,7 @@ public class deathcube : MonoBehaviour {
 		}
 
 		// Implement wait time for reader to read win/lose message
-		if ((alpha >= 1.0f) & (timeForMessage > 0.0f)) {
+		if ((alpha >= 1.0f) & (timeForMessage > 0.0f) & (!youLose) & (!youWin)) {
 			timeForMessage = timeForMessage - Time.deltaTime;
 		}
 		// In the lose scenario this might be redundant.
