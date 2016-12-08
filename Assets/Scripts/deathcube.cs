@@ -89,7 +89,6 @@ public class deathcube : MonoBehaviour {
 
 		//begin fading back in as viewer
 		if ((alpha > 0.0f) & (fadein)){
-			Debug.Log (alpha);
 			alpha = Mathf.Max (0.0f, alpha - (Time.deltaTime / timeToFade));
 			Color newColor = new Color (0.0f, 0.0f, 0.0f, alpha);
 			GetComponent<Renderer> ().material.color = newColor;
