@@ -22,6 +22,7 @@ public class PlayerController : NetworkBehaviour
 
     private bool deathCubeDead = false;
 	private bool playerIsViewer = false;
+    private bool initial = false;
 
     void Start()
     {
@@ -66,9 +67,26 @@ public class PlayerController : NetworkBehaviour
             {
                 rb.isKinematic = true;
             }
-            else
+            else if (!initial)
             {
+                initial = true;
                 rb.isKinematic = false;
+            }
+        }
+
+        if (winner || playerIsViewer)
+            rb.isKinematic = true;
+
+        deathcube[] dcs = (deathcube[])FindObjectsOfType(typeof(deathcube));
+        if (dcs.Length > 0)
+        {
+            foreach (deathcube deathcube in dcs)
+            {
+                if (deathcube.fadeoutComplete)
+                {
+                    gameObject.SetActive(false);
+                    return;
+                }
             }
         }
 
@@ -77,13 +95,11 @@ public class PlayerController : NetworkBehaviour
 
 		if (winner)
 		{
-			rb.isKinematic = true;
-
 			// Start Win Fade Out. No Fade in necessary? Or is it when back in the lobby
 			// Maybe add a wait manually? For both win and lose!
 			if (!deathCubeDead) {
 				// Activate Death Cube fade
-				deathcube[] dcs = (deathcube[])FindObjectsOfType (typeof(deathcube));
+				//deathcube[] dcs = (deathcube[])FindObjectsOfType (typeof(deathcube));
 				if (dcs.Length > 0) {
 					foreach (deathcube deathcube in dcs) {
 						//Debug.Log("Activated!");
@@ -99,7 +115,7 @@ public class PlayerController : NetworkBehaviour
         if ((transform.position.y <= -5.0f) & (!deathCubeDead))
         {
             // Activate Death Cube fade
-            deathcube[] dcs = (deathcube[])FindObjectsOfType(typeof(deathcube));
+            //deathcube[] dcs = (deathcube[])FindObjectsOfType(typeof(deathcube));
             if (dcs.Length > 0)
             {
                 foreach (deathcube deathcube in dcs)
@@ -121,7 +137,7 @@ public class PlayerController : NetworkBehaviour
             playerIsViewer = true;
 
             // Activate Death Cube fade
-            deathcube[] dcs = (deathcube[])FindObjectsOfType(typeof(deathcube));
+            //deathcube[] dcs = (deathcube[])FindObjectsOfType(typeof(deathcube));
             if (dcs.Length > 0)
             {
                 foreach (deathcube deathcube in dcs)
